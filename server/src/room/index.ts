@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io';
+import { Message } from '../types';
 import {v4} from 'uuid';
 
 const rooms: Record<string, string[]> = {};
@@ -15,9 +16,11 @@ export const roomHandler = (socket: Socket, io: any) => {
     }
 
     const joinRoom = ({roomId, peerId}: RoomParams ) => {                
-        if(!rooms[roomId]) return;
+        if(!rooms[roomId]) rooms[roomId] = [];
         rooms[roomId].push(peerId);
         socket.join(roomId);
+        console.log('entrou na sala');
+        socket.to(roomId).emit('user-joined',{peerId});                        
         socket.emit('get-users', {
             roomId,
             participants: rooms[roomId]
@@ -34,11 +37,11 @@ export const roomHandler = (socket: Socket, io: any) => {
         socket.to(roomId).emit("user-disconnected", peerId);
     }
 
-    socket.on('connection-request',(roomId,peerId)=> {
-        console.log('emitido user-joined');                             
-        socket.to(roomId).emit('user-joined',{peerId});        
-    })
+    const addMessage = ({roomId, message} : { roomId: string, message: Message}) => {          
+        io.to(roomId).emit("add-message", message);
+    }
 
+    socket.on("send-message", addMessage);
     socket.on('create-room', createRoom);
     socket.on('join-room', joinRoom);
 }

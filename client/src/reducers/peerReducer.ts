@@ -1,6 +1,6 @@
-import { ADD_PEER,REMOVE_PEER } from "./peerActions";
+import { ADD_PEER,REMOVE_PEER } from "../actions/peerActions";
 
-type PeerState = Record<string, {stream: MediaStream}>;
+export type PeerState = Record<string, {stream: MediaStream}>;
 type PeerAction = |
     { type: typeof ADD_PEER,
       payload: { peerId: string, stream: MediaStream }

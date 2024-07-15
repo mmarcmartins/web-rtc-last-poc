@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "scripts": {
+  "scripts": {    
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "watch": "tsc -w",
-    "dev": "concurrently --kill-others \"pnpm watch\" \"nodemon .\""
+    "prestart": "yarn build",
+    "start": "nodemon .",
+    "dev": "concurrently --kill-others \"yarn watch\" \"yarn start\""
   },
   "keywords": [],
   "author": "",

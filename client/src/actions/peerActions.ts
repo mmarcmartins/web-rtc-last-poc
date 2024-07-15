@@ -11,7 +11,7 @@ export const addPeerAction = ({peerId,stream}: addPeerConnectionParams) => ({
     payload: {peerId, stream}
 })
 
-export const removePeerAction = ({peerId}: addPeerConnectionParams) => ({
+export const removePeerAction = ({peerId}: {peerId: string}) => ({
     type: REMOVE_PEER,
     payload: {peerId}
 })
